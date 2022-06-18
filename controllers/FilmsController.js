@@ -8,7 +8,6 @@ let authConfig = require('../config/auth');
 const FilmsController = {};
 
 FilmsController.getFilms = (req, res) => {
-  //Esta funcion llamada findAll es una funcion de Sequelize
   Film.findAll().then((data) => {
     res.send(data);
   });

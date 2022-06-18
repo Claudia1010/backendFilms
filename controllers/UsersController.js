@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 let authConfig = require('../config/auth');
 
-//ClientController object declaration
+//UserController object declaration
 const UsersController = {};
 
 //GET
@@ -49,7 +49,6 @@ UsersController.postUser = async (req, res) => {
 };
 
 //POST function called from Views: router.post('/login', UsersController.loginUser)
-//función llamada desde Views: router.post('/login', ClientsController.loginClient)permite al cliente loguearse
 UsersController.loginUser = (req, res) => {
 
     let email = req.body.email;
@@ -64,7 +63,6 @@ UsersController.loginUser = (req, res) => {
             res.send("Usuario o password incorrectos");
         } else {
             if( bcrypt.compareSync(clave, usuarioEncontrado.password)){
-                //Ahora ya si hemos comprobado que el usuario existe (email es correcto) y el password SI corresponde a ese usuario
 
                 let token = jwt.sign({ user: usuarioEncontrado }, authConfig.secret, {
                     expiresIn: authConfig.expires
@@ -81,6 +79,57 @@ UsersController.loginUser = (req, res) => {
 
     }).catch(err => console.log(err));
 };
+
+//GET to see profile details by email
+UsersController.getuserbyemail = (req, res) => {
+    let email = req.params.email;
+    User.findOne({ where : { email : email }})
+    .then(data => {
+        res.send(data)
+    });
+};
+
+//PUT to update the user profile by id by URL, and the given data by body
+UsersController.updateUser = async (req, res) => {
+    // admin only
+    let userId = req.params.id;    
+    let body = {
+
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds)),
+        address: req.body.address,
+        phone: req.body.phone,
+    };    
+    await User.update (body, { where : {id: userId}
+    }).then((elem) => {
+        res.send(`The user with id ${userId} has been edited`);
+    }).catch(err => {
+        console.log(err);
+    });
+}
+
+//DELETE 
+UsersController.deleteuser = (req, res) => {
+    let id = req.params.id;
+   
+    User.destroy({
+         where : { 
+            id : id 
+        }
+    })
+    .then(count => {
+        if(!count){
+            return res.status(404).send({error: 'No user'});
+        }
+        res.send("User deleted");
+    }).catch((err)=> {
+        console.log(err);
+    });
+}
+
+
 
 //Export
 module.exports = UsersController;

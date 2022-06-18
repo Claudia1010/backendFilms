@@ -12,8 +12,10 @@ const FilmsController = require('../controllers/FilmsController');
 
 router.get('/', FilmsController.getFilms);
 router.post('/addfilm', isAdmin, FilmsController.postFilm);
-
-
+router.get('/searchByName/:name', FilmsController.searchByName);
+router.get('/searchByGenre/:genre', FilmsController.searchByGenre);
+router.put('/updatefilm/:id', isAdmin, FilmsController.updatefilm);
+router.delete('/deletefilm/:id', isAdmin, FilmsController.deletefilmbyid);
 
 //Export
 module.exports = router;

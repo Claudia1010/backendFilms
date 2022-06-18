@@ -20,6 +20,5 @@ RentalsController.getRentals = (req, res) => {
 };
 
 
-
 //Export
 module.exports = RentalsController;

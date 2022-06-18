@@ -110,6 +110,7 @@ UsersController.updateUser = async (req, res) => {
     });
 }
 
+
 //DELETE 
 UsersController.deleteuser = (req, res) => {
     let id = req.params.id;

@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Rental.init({
+    id:{
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+  },
     userId: DataTypes.UUID,
     filmId: DataTypes.UUID,
     totalPrice: DataTypes.INTEGER,

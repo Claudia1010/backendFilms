@@ -2,18 +2,18 @@
 
 const router = require('express').Router();
 
-const ClientsRouter = require('./views/ClientsRouter');
+// const UsersRouter = require('./views/UsersRouter');
 
-const FilmsRouter = require('./views/FilmsRouter');
+// const FilmsRouter = require('./views/FilmsRouter');
 
-const RentsRouter = require('./views/RentsRouter');
+// const RentalsRouter = require('./views/RentalsRouter');
 
 
-router.use('/clients', ClientsRouter);
+// router.use('/users', UsersRouter);
 
-router.use('/films', FilmsRouter);
+// router.use('/films', FilmsRouter);
 
-router.use('/rents', RentsRouter);
+// router.use('/rentals', RentalsRouter);
 
 
 //Export

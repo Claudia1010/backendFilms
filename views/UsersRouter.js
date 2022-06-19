@@ -10,7 +10,7 @@ const UsersController = require('../controllers/UsersController');
 
 //Endpoint-function links
 
-router.get('/', UsersController.getUsers);
+router.get('/', isAdmin, UsersController.getUsers);
 router.post('/register', UsersController.postUser);
 router.post('/login', UsersController.loginUser);
 router.get('/profile/:email', auth, UsersController.getuserbyemail);

@@ -6,12 +6,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 let authConfig = require('../config/auth');
 
-//Declaro el objeto UsuariosController (siempre igual para cada controller)
+
 const RentalsController = {};
 
-//METODO GET RENTS
+//GET RENTALS
 RentalsController.getRentals = (req, res) => {
-    //Esta funcion llamada findAll es una funcion de Sequelize
     Rental.findAll()
     .then(data => {
     
@@ -84,30 +83,6 @@ RentalsController.updateRental = async (req, res) => {
 };
 };
 
-// //DELETE the client profile we are looking for with the id by URL
-// RentalsController.deleterent = async(req, res) => {
-//     let rentalId = req.params.id;
-
-//     let consulta = `SELECT films.name
-//     FROM films
-//     INNER JOIN rentals ON films.id = rentals.filmId
-//     WHERE rentals.id LIKE '${rentalId}'`;
-
-//     let resultado = await Rental.sequelize.query(consulta, {
-//         type: Rental.sequelize.QueryTypes.SELECT
-//     });
-//     if(resultado != 0){
-//         Rental.destroy(req.body, {
-//             where: { id : rentalId }
-//        }).then((elem) => {
-//            res.send((resultado[0].name )+" has been deleted successfully");
-//        }).catch(err => {
-//            console.log(err);
-//        });
-//    }else {
-//        res.send("Check the provided information");
-//    };
-//    };
 
 //DELETE
 RentalsController.deleterental = async (req, res) => {

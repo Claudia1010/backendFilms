@@ -1,6 +1,6 @@
 
 
-//Importo el fichero .env para traerme las variables de entorno
+//Import the file .env to bring the variables
 require('dotenv').config();
 
 module.exports = {

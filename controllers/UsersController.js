@@ -1,6 +1,5 @@
 
 
-
 const { User } = require('../models/index');
 
 const jwt = require('jsonwebtoken');

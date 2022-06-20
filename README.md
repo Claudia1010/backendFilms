@@ -115,6 +115,8 @@ Endpoint-function links: The method to enter in Postman is specified, and what w
 
 **Technologies:**
 
+- Javascript
+
 - Node.Js
 
 - SQL

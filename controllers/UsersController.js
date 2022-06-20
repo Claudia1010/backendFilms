@@ -88,10 +88,16 @@ UsersController.getuserbyemail = (req, res) => {
     });
 };
 
-//PUT to update the user profile by id by URL, and the given data by body
+//PUT to update the user profile by id on URL, and the given data by body
 UsersController.updateUser = async (req, res) => {
     // admin only
-    let userId = req.params.id;    
+    let userId = req.params.id;   
+    let consulta = `SELECT users.name
+    FROM users
+    WHERE users.id LIKE '${userId}'`;
+    let resultado = await User.sequelize.query(consulta, {
+        type: User.sequelize.QueryTypes.SELECT
+    });
     let body = {
 
         name: req.body.name,
@@ -103,31 +109,42 @@ UsersController.updateUser = async (req, res) => {
     };    
     await User.update (body, { where : {id: userId}
     }).then((elem) => {
-        res.send(`The user with id ${userId} has been edited`);
+        res.send(`The user ${resultado[0].name} has been updated`);
     }).catch(err => {
         console.log(err);
     });
 }
 
-
 //DELETE 
-UsersController.deleteuser = (req, res) => {
-    let id = req.params.id;
-   
-    User.destroy({
+UsersController.deleteuser = async(req, res) => {
+    let userId = req.params.id;
+    let consulta = `SELECT users.name
+    FROM users
+    WHERE users.id LIKE '${userId}'`;
+
+    let resultado = await User.sequelize.query(consulta, {
+    type: User.sequelize.QueryTypes.SELECT
+    });
+     if(resultado != 0){
+
+        User.destroy({
          where : { 
-            id : id 
+            id : userId 
         }
     })
     .then(count => {
         if(!count){
             return res.status(404).send({error: 'No user'});
         }
-        res.send("User deleted");
+        res.send(`The user ${(resultado[0].name)} has been deleted`);
     }).catch((err)=> {
         console.log(err);
     });
-}
+}else {
+    res.send("Check the provided information");
+};
+};
+
 
 
 

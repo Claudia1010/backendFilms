@@ -73,16 +73,29 @@ FilmsController.searchByGenre = async (req, res) => {
 };
 
  //PUT update films by URL only with admin permissions
- FilmsController.updatefilm =(req, res) => {
+ FilmsController.updatefilm = async (req, res) => {
   let filmId = req.params.id;
-  Film.update(req.body, {
-      where: { id : filmId }
-  }).then((elem) => {
-      res.send(`El film con id ${filmId} ha sido modificado`);
-  }).catch(err => {
-      console.log(err);
+  let consulta = `SELECT films.name
+     FROM films
+     WHERE films.id LIKE '${filmId}'`;
+
+  let resultado = await Film.sequelize.query(consulta, {
+    type: Film.sequelize.QueryTypes.SELECT,
   });
-}
+  if (resultado != 0) {
+    Film.update(req.body, {
+      where: { id: filmId }
+    })
+      .then((elem) => {
+        res.send(`The film ${resultado[0].name} has been updated`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    res.send("Check the provided information");
+  }
+};
 
 //DELETE the film with the id by URL only with admin permissions
 FilmsController.deletefilmbyid = (req, res) => {
@@ -102,6 +115,30 @@ FilmsController.deletefilmbyid = (req, res) => {
   });
 }
 
+//DELETE the film with the id by URL only with admin permissions
+FilmsController.deletefilmbyid = async (req, res) => {
+  let filmId = req.params.id;
+  let consulta = `SELECT films.name
+     FROM films
+     WHERE films.id LIKE '${filmId}'`;
+  let resultado = await Film.sequelize.query(consulta, {
+     type: Film.sequelize.QueryTypes.SELECT
+     });
+    if(resultado != 0){
+      Film.destroy({
+       where : { 
+          id : filmId 
+      }
+      }).then((elem) => {
+      res.send(`The film ${resultado[0].name} has been deleted`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    }else {
+        res.send("Check the provided information");
+  };
+};
 
 //Export
 module.exports = FilmsController;

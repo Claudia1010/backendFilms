@@ -26,3 +26,4 @@ module.exports = sequelize.authenticate()
     console.log('MYSQL connected'); 
     return db;
 });
+

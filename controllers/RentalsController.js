@@ -10,12 +10,22 @@ let authConfig = require('../config/auth');
 const RentalsController = {};
 
 //GET RENTALS
-RentalsController.getRentals = (req, res) => {
-    Rental.findAll()
-    .then(data => {
-    
-        res.send(data)
+RentalsController.getRentals = async (req, res) => {
+    let consulta = `SELECT  users.name, films.name, rentals.id
+    FROM rentals
+    INNER JOIN users ON users.id = rentals.userId
+    INNER JOIN films ON films.id = rentals.filmId`;
+
+    let resultado = await Rental.sequelize.query(consulta, {
+        type: Rental.sequelize.QueryTypes.SELECT
     });
+    
+    if(resultado != 0){
+        res.send(resultado[0]);
+    }else {
+        res.send("Tu búsqueda es estúpida y no trae nada");
+    };
+
 };
 
 RentalsController.postRental = async (req, res) => {
